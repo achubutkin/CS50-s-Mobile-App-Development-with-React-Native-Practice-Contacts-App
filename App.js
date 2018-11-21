@@ -18,6 +18,15 @@ import AssetExample from './components/AssetExample';
 import { Card } from 'react-native-paper';
 import BottomSheet from 'react-native-bottomsheet';
 
+const Row = props => (
+  <View key={props.key}>
+    <Text>
+      {props.firstName} {props.lastName}
+    </Text>
+    <Text>{props.birthday ? props.birthday.year : ''}</Text>
+  </View>
+);
+
 export default class App extends React.Component {
   constructor(props) {
     super(props);
@@ -31,8 +40,11 @@ export default class App extends React.Component {
     this.load();
   }
   load() {
-    const fields = [Contacts.Fields.FirstName, Contacts.Fields.LastName, 
-      Contacts.Fields.Birthday];
+    const fields = [
+      Contacts.Fields.FirstName,
+      Contacts.Fields.LastName,
+      Contacts.Fields.Birthday,
+    ];
 
     Contacts.getContactsAsync({
       fields: fields,
@@ -48,7 +60,6 @@ export default class App extends React.Component {
       });
   }
   render() {
-    console.log(this.state.contacts[5]);
     return (
       <View style={styles.container}>
         <View style={styles.countText}>
@@ -56,7 +67,14 @@ export default class App extends React.Component {
         </View>
         <ScrollView>
           {this.state.contacts.map(contact => {
-            return <Text key={contact.id}>{contact.firstName} {contact.lastName} {contact.birthday ? contact.birthday.year : ''}</Text>;
+            return (
+              <Row
+                key={contact.id}
+                firstName={contact.firstName}
+                lastName={contact.lastName}
+                birthday={contact.birthday}
+              />
+            );
           })}
         </ScrollView>
       </View>

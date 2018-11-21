@@ -18,14 +18,7 @@ import AssetExample from './components/AssetExample';
 import { Card } from 'react-native-paper';
 import BottomSheet from 'react-native-bottomsheet';
 
-const Row = props => (
-  <View key={props.key}>
-    <Text>
-      {props.firstName} {props.lastName}
-    </Text>
-    <Text>{props.birthday ? props.birthday.year : ''}</Text>
-  </View>
-);
+import Row from './components/Row';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -67,14 +60,7 @@ export default class App extends React.Component {
         </View>
         <ScrollView>
           {this.state.contacts.map(contact => {
-            return (
-              <Row
-                key={contact.id}
-                firstName={contact.firstName}
-                lastName={contact.lastName}
-                birthday={contact.birthday}
-              />
-            );
+            return <Row {...contact} />;
           })}
         </ScrollView>
       </View>
@@ -95,3 +81,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
+

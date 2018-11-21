@@ -1,32 +1,37 @@
 import * as React from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 
 const Row = props => (
-  <View key={props.key} style={styles.containerItem}>
+  <View style={styles.containerItem}>
     <Text style={styles.item}>
-      {props.firstName.trim()} {props.lastName.trim()}
+      {props.firstName} {props.lastName}
     </Text>
-    <Text style={styles.item.birthday}>{props.birthday ? props.birthday.year : ''}</Text>
+    <Text style={styles.birthday}>
+      {props.birthday ? props.birthday.year : ''}
+    </Text>
   </View>
 );
 
-const styles = {
+const styles = StyleSheet.create({
   containerItem: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: 10,
     fontSize: 18,
-    height: 44,
-    backgroundColor: 'powderblue'
+    height: 68,
+    backgroundColor: 'powderblue',
+    borderBottomColor: '#cecece',
+    borderStyle: 'solid',
   },
   item: {
     flex: 'auto',
-    birthday: {
-      width: 3,
-      backgroundColor: 'skyblue'
-    }
-  }
-};
+    fontWeight: 600,
+    padding: 10,
+  },
+  birthday: {
+    flex: 'auto',
+    padding: 10,
+  },
+});
 
 export default Row;

@@ -45,24 +45,29 @@ export default class App extends React.Component {
       .then(contactResponse => {
         this.setState({
           count: `${contactResponse.data.length} contacts`,
-          contacts: contactResponse.data,
+          contacts: contactResponse.data.map(item => {
+            item.key = item.id;
+            return item; 
+          }),
         });
       })
       .catch(err => {
         console.log(err);
       });
   }
+  
+  renderItem = ({item}) => <Row {...item} />
+
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.countText}>
           <Text>{this.state.count}</Text>
         </View>
-        <ScrollView>
-          {this.state.contacts.map(contact => {
-            return <Row {...contact} />;
-          })}
-        </ScrollView>
+        <FlatList
+          data={this.state.contacts}
+          renderItem={this.renderItem}
+        />
       </View>
     );
   }

@@ -22,23 +22,58 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      count: 0,
+      count: 'Loading...',
       contacts: [],
       error: null,
     };
   }
-  componentDidMount() {}
+  componentDidMount() {
+    this.load();
+  }
+  load() {
+    const fields = [Contacts.Fields.FirstName, Contacts.Fields.LastName, 
+      Contacts.Fields.Birthday];
+
+    Contacts.getContactsAsync({
+      fields: fields,
+    })
+      .then(contactResponse => {
+        this.setState({
+          count: `${contactResponse.data.length} contacts`,
+          contacts: contactResponse.data,
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
   render() {
-    return <View style={styles.container} />;
+    console.log(this.state.contacts[5]);
+    return (
+      <View style={styles.container}>
+        <View style={styles.countText}>
+          <Text>{this.state.count}</Text>
+        </View>
+        <ScrollView>
+          {this.state.contacts.map(contact => {
+            return <Text key={contact.id}>{contact.firstName} {contact.lastName} {contact.birthday ? contact.birthday.year : ''}</Text>;
+          })}
+        </ScrollView>
+      </View>
+    );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'start',
     paddingTop: Constants.statusBarHeight,
     backgroundColor: '#ecf0f1',
-    padding: 8,
+    padding: Constants.paddingTop,
+  },
+  countText: {
+    fontSize: 28,
+    alignItems: 'center',
   },
 });
